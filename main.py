@@ -4,6 +4,7 @@ from ball import Ball
 from net import Net
 from scoreboard import Scoreboard
 import time
+import random
 
 screen = Screen()
 screen.setup(width=800, height=600)
@@ -14,11 +15,11 @@ game_net=Net()
 
 ball=Ball()
 
-scoreboard=Scoreboard()
+l_paddle_scoreboard=Scoreboard((-100,270))
+r_paddle_scoreboard=Scoreboard((100,270))
 
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
-
 
 
 screen.listen()
@@ -30,6 +31,8 @@ screen.onkey(l_paddle.down, "s")
 
 y_direction=-1
 x_direction=-1
+l_paddle_scoreboard.show()
+r_paddle_scoreboard.show()
 is_game_on = True
 while is_game_on:
 	screen.update()
@@ -48,14 +51,23 @@ while is_game_on:
 		x_direction = +1
 	elif ball.xcor() >=360:
 		print("1 point for RIGHT Paddle")
-		scoreboard.show_value(r_pad=1)
-		print(f"showing score : {scoreboard.r_pad_score}")
-		is_game_on = False
+		l_paddle_scoreboard.increase()
+		l_paddle_scoreboard.show()
+		print(f"showing score : {l_paddle_scoreboard.score}")
+		ball.goto(0, 0)
+		x_direction=random.choice([1])
+		y_direction=random.choice([-1,1])
+		print(f"random{x_direction,y_direction}")
 	elif ball.xcor() <=-360:
 		print("1 point for LEFT Paddle")
-		scoreboard.show_value(l_pad=1)
-		print(f"showing score : {scoreboard.l_pad_score}")
-		is_game_on = False
+		r_paddle_scoreboard.increase()
+		r_paddle_scoreboard.show()
+		print(f"showing score : {r_paddle_scoreboard.score}")
+		ball.goto(0,0)
+		x_direction=random.choice([-1])
+		y_direction=random.choice([-1,1])
+		print(f"random{x_direction,y_direction}")
+
 
 
 
